@@ -1,0 +1,19 @@
+@startuml context-level
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(user_contractor, "Подрядчик")
+Person(user_developer, "Застройщик")
+
+System(system_site, "ICRPS site", "Allows contractor getting know his digital index and developer can check digital index of his contractors")
+
+System_Ext(system_email, "Почтовый сервис", "Отправка писем клиенту на электронную почту")
+System_Ext(system_sro_site, "Сайт членов 'СРО'", "Предоставление информации о подрядчиках, являющимися 'СРО'")
+System_Ext(system_esia, "Сервис Гослуги", "Предоставление данных об организации по ИНН")
+
+Rel(user_contractor, system_site, "Прохождение теста для получения 'Цифрового индекса'")
+Rel(user_developer, system_site, "Просмотр 'Цифрового индекса' у своих подрядчиков")
+Rel(system_site, system_email, "Отправка писем подрядчику/застройщику")
+Rel(system_site, system_sro_site, "Периодическое пополнение базы информации о подрядчиках являющимися 'СРО'")
+Rel(system_site, system_esia, "Подтвержение организации и данных организации (ИНН, Название)")
+
+@enduml

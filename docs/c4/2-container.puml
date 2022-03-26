@@ -1,0 +1,28 @@
+@startuml container-level
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user_contractor, "Подрядчик")
+Person(user_developer, "Застройщик")
+
+System(system_site, "ICRPS site", "Allows contractor getting know his digital index and developer can check digital index of his contractors")
+
+System_Boundary(system_site, "ICRPS site") {
+    Container(system_app, "ICRPS app", "Apache, Drupal, PHP")
+    ContainerDb(system_db, "База данных", "MySQL")
+}
+
+System_Ext(system_email, "Почтовый сервис", "Отправка писем клиенту на электронную почту")
+System_Ext(system_sro_site, "Сайт членов 'СРО'", "Предоставление информации о подрядчиках, являющимися 'СРО'")
+System_Ext(system_esia, "Сервис Гослуги", "Предоставление данных об организации по ИНН")
+
+Rel(system_app, system_db, "Регистрация/Получение пользователей")
+Rel(system_app, system_db, "Сохранение/Получение результатов прохождения тестов и 'Индекса цифровизации'")
+Rel(system_app, system_db, "Сохранение/Получение данных о подрядчике и застройщике")
+
+Rel(user_contractor, system_app, "Прохождение теста для получения 'Цифрового индекса'")
+Rel(user_developer, system_app, "Просмотр 'Цифрового индекса' у своих подрядчиков")
+Rel(system_app, system_email, "Отправка писем подрядчику/застройщику")
+Rel(system_app, system_sro_site, "Периодическое пополнение базы информации о подрядчиках являющимися 'СРО'")
+Rel(system_app, system_esia, "Подтвержение организации и данных организации (ИНН, Название)")
+
+@enduml

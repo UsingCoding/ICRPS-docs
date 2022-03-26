@@ -1,0 +1,40 @@
+@startuml component-level
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Person(user_contractor, "Подрядчик")
+Person(user_developer, "Застройщик")
+
+Container_Boundary(container_app, "ICRPS app") {
+    Component(digital_index_constructor, "Main Module", "Drupal Module, PHP")
+    Component(drupal_core, "Druapl CORE", "PHP")
+    Component(recommendations_generator, "Recomendations generator", "Drupal Module, PHP")
+    Component(certificates_generator, "Certificates generator", "Drupal Module, PHP")
+    Component(esia_verifier, "Esia verifier", "Drupal Module, PHP")
+    Component(parser, "SRO parser", "Drupal Module, PHP")
+}
+
+ComponentDb(component_system_db, "База данных", "Mysql")
+
+System_Ext(system_email, "Почтовый сервис", "Отправка писем клиенту на электронную почту")
+System_Ext(system_sro_site, "Сайт членов 'СРО'", "Предоставление информации о подрядчиках, являющимися 'СРО'")
+System_Ext(system_esia, "Сервис Гослуги", "Предоставление данных об организации по ИНН")
+
+Rel(user_contractor, digital_index_constructor, "Прохождение теста для получения 'Цифрового индекса'")
+Rel(user_developer, digital_index_constructor, "Просмотр 'Цифрового индекса' у своих подрядчиков")
+
+Rel(digital_index_constructor, component_system_db, "Сохранение/Получение результатов прохождения тестов и 'Индекса цифровизации'")
+Rel(digital_index_constructor, component_system_db, "Сохранение/Получение данных о подрядчике и застройщике")
+Rel(digital_index_constructor, drupal_core, "<Использует>")
+
+Rel(digital_index_constructor, recommendations_generator, "<Использует>")
+Rel(digital_index_constructor, certificates_generator, "<Использует>")
+Rel(digital_index_constructor, esia_verifier, "<Использует>")
+
+Rel(drupal_core, parser, "<Использует>", "CRON")
+Rel(parser, component_system_db, "Сохраняет в базу данные об организациях")
+
+Rel(digital_index_constructor, system_email, "Отправка писем подрядчику/застройщику")
+Rel(parser, system_sro_site, "Периодическое пополнение базы информации о подрядчиках являющимися 'СРО'")
+Rel(esia_verifier, system_esia, "Подтвержение организации и данных организации (ИНН, Название)")
+
+@enduml
