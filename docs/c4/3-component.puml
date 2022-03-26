@@ -1,16 +1,19 @@
 @startuml component-level
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
+Person(user_anonymous, "Anonymous")
 Person(user_contractor, "Подрядчик")
 Person(user_developer, "Застройщик")
+Person(user_news_editor, "Редактор новостей")
 
 Container_Boundary(container_app, "ICRPS app") {
-    Component(digital_index_constructor, "Main Module", "Drupal Module, PHP")
+    Component(digital_index_constructor, "Main Module", "Drupal Module, PHP, CSS, JS")
     Component(drupal_core, "Druapl CORE", "PHP")
     Component(recommendations_generator, "Recomendations generator", "Drupal Module, PHP")
     Component(certificates_generator, "Certificates generator", "Drupal Module, PHP")
     Component(esia_verifier, "Esia verifier", "Drupal Module, PHP")
     Component(parser, "SRO parser", "Drupal Module, PHP")
+    Component(news, "Site News", "Drupal Module, PHP, CSS, JS")
 }
 
 ComponentDb(component_system_db, "База данных", "Mysql")
@@ -21,6 +24,8 @@ System_Ext(system_esia, "Сервис Гослуги", "Предоставлен
 
 Rel(user_contractor, digital_index_constructor, "Прохождение теста для получения 'Цифрового индекса'")
 Rel(user_developer, digital_index_constructor, "Просмотр 'Цифрового индекса' у своих подрядчиков")
+Rel(user_anonymous, news, "Просмотр новостей на сайте")
+Rel(user_news_editor, news, "Редактирование/Добавление новостей на сайт")
 
 Rel(digital_index_constructor, component_system_db, "Сохранение/Получение результатов прохождения тестов и 'Индекса цифровизации'")
 Rel(digital_index_constructor, component_system_db, "Сохранение/Получение данных о подрядчике и застройщике")
@@ -29,6 +34,9 @@ Rel(digital_index_constructor, drupal_core, "<Использует>")
 Rel(digital_index_constructor, recommendations_generator, "<Использует>")
 Rel(digital_index_constructor, certificates_generator, "<Использует>")
 Rel(digital_index_constructor, esia_verifier, "<Использует>")
+
+Rel(news, drupal_core, "<Использует>", "Styles")
+Rel(news, component_system_db, "Сохранение/Получение новостей")
 
 Rel(drupal_core, parser, "<Использует>", "CRON")
 Rel(parser, component_system_db, "Сохраняет в базу данные об организациях")
