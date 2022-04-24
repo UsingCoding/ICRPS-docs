@@ -8,7 +8,7 @@ Person(user_news_editor, "Редактор новостей")
 
 Container_Boundary(container_app, "ICRPS app") {
     Component(digital_index_constructor, "Main Module", "Drupal Module, PHP, CSS, JS")
-    Component(drupal_core, "Druapl CORE", "PHP")
+    Component(drupal_core, "Drupal CORE", "PHP")
     Component(recommendations_generator, "Recomendations generator", "Drupal Module, PHP")
     Component(certificates_generator, "Certificates generator", "Drupal Module, PHP")
     Component(esia_verifier, "Esia verifier", "Drupal Module, PHP")
